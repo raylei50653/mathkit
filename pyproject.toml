@@ -1,0 +1,65 @@
+[project]
+name = "mathkit"
+version = "0.0.1"
+description = "Non-invasive computation engine and visualization for mathematical research repositories"
+readme = "README.md"
+license = "Apache-2.0"
+requires-python = ">=3.12"
+dependencies = ["numpy>=2.0"]
+
+[project.optional-dependencies]
+nx = ["networkx==3.5"]
+validate = ["jsonschema>=4.23"]
+stream = ["ijson>=3.3"]
+
+[project.scripts]
+mathkit = "mathkit.cli:main"
+
+[project.entry-points."mathkit.domains"]
+c5 = "mathkit.domains.c5:plugin"
+
+[dependency-groups]
+dev = [
+  "pytest>=8",
+  "hypothesis>=6.100",
+  "ruff>=0.6",
+  "pyright>=1.1.380",
+  "import-linter>=2.1",
+  "networkx==3.5",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/mathkit"]
+
+[tool.ruff]
+line-length = 100
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "SIM"]
+
+[tool.pyright]
+include = ["src", "tests"]
+typeCheckingMode = "strict"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.importlinter]
+root_package = "mathkit"
+
+[[tool.importlinter.contracts]]
+name = "Layered architecture"
+type = "layers"
+layers = [
+  "mathkit.cli",
+  "mathkit.domains | mathkit.adapters",
+  "mathkit.render",
+  "mathkit.layout",
+  "mathkit.scene",
+  "mathkit.core",
+]
