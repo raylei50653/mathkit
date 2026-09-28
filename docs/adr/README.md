@@ -4,7 +4,9 @@
 
 | # | 決定 | 狀態 |
 | --- | --- | --- |
-| [0001](0001-scene-protocol.md) | 計算與呈現以 Scene JSON 分隔 | 採用 |
+| [0001](0001-scene-protocol.md) | 計算與呈現以 Scene JSON 分隔 | 採用（由 0005 修訂） |
 | [0002](0002-non-invasive-integration.md) | 對研究 repo 單向、唯讀、選擇性依賴 | 採用 |
 | [0003](0003-python-first.md) | Python 優先，Rust 僅在 profiling 證明必要後引入 | 採用 |
 | [0004](0004-domain-plugins.md) | 領域語義以 entry-point 插件提供 | 採用 |
+| [0005](0005-math-ir.md) | 在 Scene 之前加入 Math IR 與 Visual Compiler | 採用 |
+| [0006](0006-determinism.md) | 決定性分為語意與序列化兩層；小圖 layout 以有理數精確解 | 採用 |

@@ -6,7 +6,7 @@
 | --- | --- | --- |
 | 語言（引擎、CLI） | Python ≥ 3.12 | 必要 |
 | 套件與環境 | uv + hatchling（`src/` layout） | 必要 |
-| 數值 | numpy（Tutte 線性系統） | 必要，唯一的必要第三方依賴 |
+| 數值 | 標準庫 `fractions`（小圖精確 layout）；numpy（大圖浮點 fallback） | numpy 為唯一的必要第三方依賴 |
 | 圖論參照 | networkx 3.5 | extra `[nx]`；只用於轉換與測試對照 |
 | 資料模型 | 標準庫 `dataclasses` + 手寫 JSON Schema 產生 | 必要（無依賴） |
 | Schema 驗證 | `jsonschema` | extra `[validate]` |
@@ -36,8 +36,8 @@
 - 仍提供 `to_networkx()`／`from_networkx()`，networkx 當參照實作與測試對照組。
 
 ### dataclasses 而非 pydantic
-- 核心不想帶重依賴；Scene 模型簡單，手寫 `to_json`／schema 產生器即可。
-- 若 Scene 驗證需求變複雜，再以 extra 形式引入 pydantic，不動核心。
+- 核心不想帶重依賴；Math IR 與 Scene 模型都簡單，手寫 `to_json`／schema 產生器即可。
+- 若驗證需求變複雜，再以 extra 形式引入 pydantic，不動核心。
 
 ### SVG／TikZ 手寫輸出，而非 matplotlib
 - 需要決定性位元組輸出（golden 測試、sha256 釘住）；matplotlib 輸出含版本、ID 等不穩定內容。
@@ -63,5 +63,6 @@
 ## 版本策略
 
 - Python 支援範圍：3.12–3.14；CI 矩陣三版。
-- Scene schema 以 `mathkit.scene/<major>` 版本化；major 變動需提供轉換器。
+- Math IR 與 Scene 分別以 `mathkit.ir/<major>`、`mathkit.scene/<major>` 版本化；major 變動需提供轉換器。
+- layout 引擎另有版本號，寫入 Scene；序列化決定性只在同版本間保證（ADR-0006）。
 - 語意化版本；0.x 期間 core API 可破壞性變更，但需在 CHANGELOG 註明。

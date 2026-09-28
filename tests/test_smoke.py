@@ -5,7 +5,10 @@ import pytest
 from mathkit import __version__
 from mathkit.cli import main
 
-LAYERS = ["core", "scene", "layout", "render", "adapters", "domains", "domains.c5", "cli"]
+LAYERS = [
+    "core", "ir", "scene", "compile", "layout", "render",
+    "adapters", "domains", "domains.c5", "cli",
+]
 
 
 def test_version() -> None:

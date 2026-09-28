@@ -58,8 +58,9 @@ type = "layers"
 layers = [
   "mathkit.cli",
   "mathkit.domains | mathkit.adapters",
+  "mathkit.compile",
   "mathkit.render",
   "mathkit.layout",
-  "mathkit.scene",
+  "mathkit.ir | mathkit.scene",
   "mathkit.core",
 ]

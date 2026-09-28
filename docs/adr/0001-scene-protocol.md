@@ -1,6 +1,6 @@
 # ADR-0001：計算與呈現以 Scene JSON 分隔
 
-狀態：採用（2026-09-28）
+狀態：採用（2026-09-28），由 [ADR-0005](0005-math-ir.md) 修訂：Scene 的輸入改為 Math IR 經 Visual Compiler 產生
 
 ## 背景
 需要同時支援 SVG、TikZ、瀏覽器互動三種輸出，且引擎為 Python、檢視器為 TypeScript。

@@ -33,7 +33,7 @@
 
 ## 3. 證據層級對齊
 
-`math/docs/STATUS.md` 區分紙面、Python 有限證書、Lean 等證據層級。mathkit 的所有輸出都帶：
+`math/docs/STATUS.md` 區分紙面、Python 有限證書、Lean 等證據層級。mathkit 的 Math IR 決定下列欄位，Scene 與所有 render 輸出原樣轉帶：
 
 ```json
 "evidence": "computation",
