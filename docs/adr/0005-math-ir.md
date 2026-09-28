@@ -7,7 +7,8 @@
 
 ## 決定
 - 新增 **Math IR**（`mathkit.ir/1`）：數學物件與其關係（`graph`、`configuration`、`coloring`、`relation`、`witness`、`transformation`、`proof_step`、`certificate_ref`；領域 kinds 以 `c5.` 等前綴）。
-- 新增 **Visual Compiler**：`compile_visual(doc, view) -> Scene`，以 `kind → rule` 註冊表運作；領域規則由 domain pack 註冊。
+- 新增 **Visual Compiler**：`compile_visual(doc, view) -> Scene`，以 `(kind, view) → rule` 註冊表運作；領域規則由 domain pack 註冊。同鍵重複註冊即報錯（fail-closed），plugin 依名稱排序載入。
+- `origin` 參照完整性為規格的一部分（ARCHITECTURE §3「參照完整性」）：id 唯一、禁止 dangling origin。
 - **Scene** 改為純視覺：`role` 改名 `class`（封閉的視覺詞彙），移除 `meta`，新增 `origin` 指回 IR id。
 - `evidence`、`provenance` 在 IR 決定，Scene 原樣轉帶。
 - IR kinds 只在有真實使用方時新增；M1a 只實作 `graph`、`coloring`、`c5.boundary_cycle`。

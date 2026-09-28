@@ -9,10 +9,10 @@
 1. **語意決定性**（無條件）：同輸入 → 同 IR、同 Scene 拓撲、同 canonical 排序、同關係與 `origin`。
 2. **序列化決定性**（有條件）：同 mathkit／schema／layout 版本下，位元組相同。
 3. 座標採 canonical quantization：正規化至固定 bounding box 後以整數網格表示。
-4. Tutte 對頂點數 ≤ 64 的圖以 `fractions.Fraction` 精確求解，再以 round-half-even 量化，因此跨平台位元組一致。研究中的圖幾乎都在此範圍內。
-5. 超過門檻時用 numpy 浮點，只保證語意決定性，Scene 標註 `layout.exact: false`。
+4. Tutte 可行時以 `fractions.Fraction` 精確求解，再以 round-half-even 量化，因此跨平台位元組一致；否則用 numpy 浮點，只保證語意決定性。Scene 以 `layout.exact` 標明走哪一條。
+5. **契約**只綁 `layout.exact` 旗標，不綁圖的大小。何時走 exact 是實作門檻：初始規劃值為內部未知數 ≤ 64，之後可改依係數／分母成長或計算預算判斷，也可改用 Bareiss 等 fraction-free elimination。門檻變更需升 layout 版本；選擇本身必須決定性。
 
 ## 後果
 - 位元組 golden 只驗 exact 路徑；語意 golden 全平台跑。
-- 精確解為 O(n³) 有理數運算，n ≤ 64 時成本可接受；門檻可調。
+- 精確解為 O(n³) 有理數運算，分母可能膨脹；以可調門檻與 fraction-free elimination 控制。研究中的圖幾乎都遠小於初始門檻。
 - layout 演算法變更必須升 layout 版本號。

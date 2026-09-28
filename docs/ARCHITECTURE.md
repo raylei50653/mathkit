@@ -43,6 +43,20 @@ core                        ← 計算原語
 - `scene` 不依賴 `ir`：Scene 只存 `origin` 字串，不 import IR 型別。
 - `compile` 本身只含規則註冊表與通用規則；C5 規則由 domain pack 註冊進來。
 
+除分層外，另明定以下**禁止依賴**（import-linter `forbidden` contract），確保資料流為單一路徑
+`Math IR → Visual Compiler → Scene IR → Layout → Renderer`：
+
+| 禁止 | 理由 |
+| --- | --- |
+| `compile` ↛ `render` | 編譯只產 Scene，不決定輸出格式 |
+| `compile` ↛ `layout` | 編譯只給 layout 提示（如外圈），不算座標 |
+| `render` ↛ `compile` | renderer 只吃 Scene，不回頭碰 IR |
+| `scene` ↛ `ir` | Scene 只以 `origin` 字串連回 IR |
+| `ir` ↛ `scene` | 數學物件不知道自己怎麼被畫 |
+| `layout`、`render`、`scene`、`ir`、`core` ↛ `domains` | 領域語義只經註冊進入 |
+
+串接各階段的是 `cli`（或使用者程式），不是階段之間互相呼叫。
+
 ## 3. 模組職責
 
 ### core（計算引擎）
@@ -85,7 +99,9 @@ core                        ← 計算原語
 ### compile（Visual Compiler）
 `compile_visual(doc: MathDocument, view: str = "default") -> Scene`
 
-- 規則表：`kind → Rule`。Rule 把一個 IR 物件轉成 Scene 元素（nodes、edges、layers、layout 提示），並填 `origin`。
+- 規則表：`(kind, view) → Rule`。Rule 把一個 IR 物件轉成 Scene 元素（nodes、edges、layers、layout 提示），並填 `origin`。
+- **衝突 fail-closed**：同一個 `(kind, view)` 只能有一條規則。兩個來源（通用規則或任一 domain pack）同時註冊時，直接拋 `RuleConflictError`，列出雙方來源；不允許後載入者覆蓋。要取代規則必須由使用者明確設定，不能靠載入順序。
+- **決定性的 plugin discovery**：entry points 依名稱排序後依序載入；同名 domain 重複出現也是錯誤。註冊表建完後凍結，編譯期間不可變動。
 - 規則來源：通用規則（`graph`、`coloring`、`witness` 的 `branch_sets`）＋ domain pack 註冊的規則。
 - 沒有規則的 kind：產生警告並略過，不失敗；`graph` 類物件至少以通用規則畫出。
 - 同一份 IR 可有多個 view（例如 `default`、`kempe:1-3`、`minor`），由 CLI／檢視器選擇。
@@ -110,18 +126,31 @@ core                        ← 計算原語
 ```
 
 - `class` 是視覺類別（`outer`、`emphasis`、`muted`、`dashed`…），封閉列舉，由 renderer 對應樣式。
-- `origin` 是 IR 物件／元素 id 的清單；renderer 忽略它，檢視器用它查 IR 顯示語義。
+- `origin` 是 IR 物件／元素 id 的清單；renderer 忽略它，檢視器用它查 IR 顯示語義。參照完整性見下方。
 - `pos` 為 null 時由 `layout` 補上；有值時直接使用（手工擺位可重現）。
 - `layers.kind` 是封閉列舉；新增需升 schema 小版本。
 - 沒有 `meta` 自由欄位：領域資訊一律留在 IR，以 `origin` 連回。
 - JSON Schema 由 Python 模型產生，放 `schemas/`（`ir.schema.json`、`scene.schema.json`），TS 型別由此生成。
+
+### 參照完整性（Math IR ↔ Scene）
+
+規格層規則，實作時由 `validate_origins(document, scene)` 檢查，compile 輸出前強制執行：
+
+1. IR 物件 id 在整份 `MathDocument` 內唯一。
+2. 子元素 id（`物件/元素`）在其物件內唯一，因此全域唯一。
+3. IR 物件之間的引用（如 `"graph": "G"`）必須能 resolve。
+4. Scene 每個元素（node、edge、layer）的 `origin` 中每個 id 都必須能 resolve 到 IR 物件或子元素；**禁止 dangling origin**。
+5. 多個 Scene 元素指向同一 origin：允許（例如同一頂點出現在兩個 view 疊加層）。
+6. 一個 Scene 元素指向多個 origin：允許（例如某頂點同時是 `G/b0` 與 boundary cycle `B` 的成員）。
+7. `origin` 可為空清單，僅限純裝飾元素（如圖例），且其 `class` 必須屬於裝飾類。
+8. Scene 內部 id（node、edge、layer）唯一；edge 的 `u`／`v` 必須指向存在的 node。
 
 ### layout
 | 引擎 | 用途 | 里程碑 |
 | --- | --- | --- |
 | `fixed` | 使用 Scene 自帶座標 | M1a |
 | `circular` | 小圖、外圈正多邊形 | M1a |
-| `tutte` | 平面圖、外圈固定，內點解線性系統；小圖用有理數精確解（§6） | M1b |
+| `tutte` | 平面圖、外圈固定，內點解線性系統；可行時用有理數精確解（§6） | M1b |
 | `layered` | DAG（relation 蘊含、transformation 鏈、自動機） | M3 後 |
 
 ### render
@@ -204,7 +233,10 @@ mathkit/
 
 - 所有集合與 dict 輸出前排序；JSON 固定 `sort_keys`、縮排與換行。
 - 座標經 **canonical quantization**：先正規化到固定 bounding box，再以整數網格（預設 1/10⁴）表示，輸出為整數或固定小數。
-- Tutte：頂點數 ≤ 門檻（預設 64）時以 `fractions.Fraction` 精確解，量化時用 round-half-even，因此跨平台位元組一致；超過門檻才用 numpy 浮點，此時只保證語意決定性，輸出標註 `layout.exact: false`。
+- Tutte：可行時以有理數精確解，量化用 round-half-even，因此跨平台位元組一致；否則用 numpy 浮點，此時只保證語意決定性，輸出標註 `layout.exact: false`。
+  - **契約**只有：`layout.exact: true` ⇒ 位元組跨平台一致；`false` ⇒ 只保證語意決定性。
+  - 何時走 exact 是**實作門檻**，不是數學契約，可隨版本調整（調整即升 layout 版本）。初始規劃值：內部未知數（非外圈頂點）≤ 64。之後可依內部未知數、係數／分母成長、計算預算判斷，並考慮 Bareiss 等 fraction-free elimination 降低分母膨脹。
+  - 同一輸入在同一 layout 版本下，exact／fallback 的選擇本身必須決定性（不得依執行時間或機器負載）。
 - 不寫入時間戳、主機名、絕對路徑。
 - Golden 測試分兩類：語意 golden（比對正規化結構，全平台跑）與位元組 golden（比對 sha256，只驗 exact 路徑）。
 
@@ -212,9 +244,9 @@ mathkit/
 
 | 層級 | 工具 | 內容 |
 | --- | --- | --- |
-| 單元 | pytest | core、compile rules、render 小例子 |
-| 性質 | hypothesis | 著色合法、Kempe swap 保持合法、Tutte 嵌入無交叉、compile 的每個 Scene 元素都有有效 `origin` |
+| 單元 | pytest | core、compile rules、render 小例子；規則衝突必須拋錯 |
+| 性質 | hypothesis | 著色合法、Kempe swap 保持合法、Tutte 嵌入無交叉、`validate_origins` 對所有 compile 輸出成立 |
 | 交叉 | pytest + networkx | 平面性、連通分量與 networkx 對照 |
 | Golden | pytest | §6 兩類 golden |
 | 相容 | `mathkit check` | 對 `math` artifacts 重算（本機執行，不進 CI） |
-| 架構 | import-linter | §2 分層 |
+| 架構 | import-linter | §2 分層與禁止依賴 |

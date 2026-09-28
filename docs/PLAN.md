@@ -65,8 +65,9 @@ U5 很重要：mathkit 的獨立實作可以當舊腳本的 second opinion，提
 - 驗收：
   - `mathkit render examples/c5.ir.json` 產出 C5（外圈五點＋一個中心點）的 SVG；
   - 同輸入兩次 sha256 相同；
-  - 每個 Scene 元素的 `origin` 都指向存在的 IR id（性質測試）；
-  - `render` 與 `layout` 不 import `domains`（import-linter）。
+  - `validate_origins` 對 M1a 所有輸出成立；
+  - 同一 `(kind, view)` 重複註冊會拋 `RuleConflictError`；
+  - import-linter 分層與禁止依賴 contracts 全數通過。
 
 ### M1b 平面引擎
 - `core.planar`：

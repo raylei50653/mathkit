@@ -64,3 +64,21 @@ layers = [
   "mathkit.ir | mathkit.scene",
   "mathkit.core",
 ]
+
+[[tool.importlinter.contracts]]
+name = "Single data path: compile emits Scene only; render never reaches back"
+type = "forbidden"
+source_modules = ["mathkit.compile"]
+forbidden_modules = ["mathkit.render", "mathkit.layout"]
+
+[[tool.importlinter.contracts]]
+name = "Renderers consume Scene only"
+type = "forbidden"
+source_modules = ["mathkit.render"]
+forbidden_modules = ["mathkit.compile", "mathkit.ir"]
+
+[[tool.importlinter.contracts]]
+name = "Domain-free lower layers"
+type = "forbidden"
+source_modules = ["mathkit.core", "mathkit.ir", "mathkit.scene", "mathkit.layout", "mathkit.render", "mathkit.compile"]
+forbidden_modules = ["mathkit.domains", "mathkit.adapters"]
