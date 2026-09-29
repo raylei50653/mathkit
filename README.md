@@ -11,7 +11,7 @@
 adapter → Math IR（數學意義）→ Visual Compiler → Scene（純視覺）→ layout → SVG／TikZ／Viewer
 ```
 
-> 狀態：**M0 規劃階段**。目錄與介面已定，演算法尚未實作。
+> 狀態：**M1a 完成**。`mathkit render` 可把 Math IR／Scene 轉成決定性 SVG 或 Scene JSON；下一步 M1b 平面引擎。
 
 ## 文件
 
@@ -23,13 +23,14 @@ adapter → Math IR（數學意義）→ Visual Compiler → Scene（純視覺�
 | [整合契約](docs/INTEGRATION.md) | 與 `math` repo 的邊界：讀什麼、不碰什麼、如何導入 |
 | [架構決策紀錄](docs/adr/) | ADR，每個不可輕易反悔的決定一份 |
 
-## 預期用法（M1a 起逐步可用）
+## 用法
 
 ```bash
 # 在 math repo 內，不安裝、不改 pyproject
 uv run --with ../mathkit mathkit render artifacts/c5_k4_blocks/observations.json -o /tmp/k4.svg
-uv run --with ../mathkit mathkit render ../mathkit/examples/c5.ir.json -o /tmp/c5.svg   # M1a 驗收
-uv run --with ../mathkit mathkit serve artifacts/          # 本機瀏覽器檢視
+uv run --with ../mathkit mathkit render ../mathkit/examples/c5.ir.json -o /tmp/c5.svg   # 可用（M1a）
+uv run --with ../mathkit mathkit render ../mathkit/examples/c5.ir.json -o /tmp/c5.scene.json  # Scene JSON
+uv run --with ../mathkit mathkit serve artifacts/          # 本機瀏覽器檢視（M4）
 ```
 
 ```python
@@ -45,7 +46,9 @@ except ImportError:
 ```bash
 uv sync
 uv run pytest
-uv run ruff check . && uv run pyright
+uv run ruff check . && uv run pyright && uv run lint-imports
+uv run mathkit schema --out-dir schemas               # 模型改動後重生 schema
+MATHKIT_UPDATE_GOLDEN=1 uv run pytest tests/test_cli.py  # 刻意改變輸出後重生 golden
 ```
 
 授權：Apache-2.0（與 `math` 一致）。

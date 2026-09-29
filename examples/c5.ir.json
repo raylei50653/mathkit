@@ -1,0 +1,26 @@
+{
+  "schema": "mathkit.ir/1",
+  "evidence": "paper",
+  "provenance": {"source": "examples/c5.ir.json"},
+  "objects": [
+    {
+      "id": "G",
+      "kind": "graph",
+      "vertices": ["b_0", "b_1", "b_2", "b_3", "b_4", "v"],
+      "edges": [
+        {"id": "e0", "u": "b_0", "v": "b_1"},
+        {"id": "e1", "u": "b_1", "v": "b_2"},
+        {"id": "e2", "u": "b_2", "v": "b_3"},
+        {"id": "e3", "u": "b_3", "v": "b_4"},
+        {"id": "e4", "u": "b_4", "v": "b_0"},
+        {"id": "s0", "u": "v", "v": "b_0"},
+        {"id": "s1", "u": "v", "v": "b_1"},
+        {"id": "s2", "u": "v", "v": "b_2"},
+        {"id": "s3", "u": "v", "v": "b_3"},
+        {"id": "s4", "u": "v", "v": "b_4"}
+      ]
+    },
+    {"id": "B", "kind": "c5.boundary_cycle", "graph": "G", "cycle": ["b_0", "b_1", "b_2", "b_3", "b_4"]},
+    {"id": "col", "kind": "coloring", "graph": "G", "values": {"b_0": 1, "b_1": 2, "b_2": 1, "b_3": 2, "b_4": 3, "v": 4}}
+  ]
+}

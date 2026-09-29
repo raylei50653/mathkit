@@ -103,7 +103,9 @@ core                        ← 計算原語
 - **衝突 fail-closed**：同一個 `(kind, view)` 只能有一條規則。兩個來源（通用規則或任一 domain pack）同時註冊時，直接拋 `RuleConflictError`，列出雙方來源；不允許後載入者覆蓋。要取代規則必須由使用者明確設定，不能靠載入順序。
 - **決定性的 plugin discovery**：entry points 依名稱排序後依序載入；同名 domain 重複出現也是錯誤。註冊表建完後凍結，編譯期間不可變動。
 - 規則來源：通用規則（`graph`、`coloring`、`witness` 的 `branch_sets`）＋ domain pack 註冊的規則。
-- 沒有規則的 kind：產生警告並略過，不失敗；`graph` 類物件至少以通用規則畫出。
+- 查找順序：`(kind, view)` → `(kind, "default")`；因此非預設 view 只需註冊與預設不同的規則。
+- 沒有規則的 kind：產生警告（`CompileWarning`）並略過，不失敗；`graph` 類物件至少以通用規則畫出。
+- 規則寫入 `SceneBuilder`：Scene 元素以其所畫的 IR 元素 id 為鍵，後續規則（如 `c5.boundary_cycle`）可找到並改 `class`、追加 `origin`。IR 物件依引用關係排序後編譯（被引用者先）。
 - 同一份 IR 可有多個 view（例如 `default`、`kempe:1-3`、`minor`），由 CLI／檢視器選擇。
 
 ### scene（Scene IR）
@@ -149,12 +151,12 @@ core                        ← 計算原語
 | 引擎 | 用途 | 里程碑 |
 | --- | --- | --- |
 | `fixed` | 使用 Scene 自帶座標 | M1a |
-| `circular` | 小圖、外圈正多邊形 | M1a |
+| `circular` | 小圖：外圈正多邊形；內點 1 個置中，多個排內圈。三角函數以 `decimal` 固定精度計算，不經 libm，故 `exact: true` | M1a |
 | `tutte` | 平面圖、外圈固定，內點解線性系統；可行時用有理數精確解（§6） | M1b |
 | `layered` | DAG（relation 蘊含、transformation 鏈、自動機） | M3 後 |
 
 ### render
-- `svg`：手寫生成器（不依賴 matplotlib），CSS 變數控制色盤，支援深色模式。
+- `svg`：手寫生成器（不依賴 matplotlib），內嵌 `<style>`：淺色色盤＋`prefers-color-scheme: dark` 覆寫。色值直接寫在規則內、不用 CSS 變數，因為 cairosvg、rsvg 等非瀏覽器消費端不支援 `var()`。只畫第一個 `vertex-color` layer。
 - `tikz`：輸出 `tikzpicture` 片段，供 `math/paper/main.tex` `\input`。
 - `json`：Scene 本身（給檢視器）。
 

@@ -1,0 +1,157 @@
+{
+  "$defs": {
+    "coloring": {
+      "additionalProperties": false,
+      "properties": {
+        "graph": {
+          "$ref": "#/$defs/name"
+        },
+        "id": {
+          "$ref": "#/$defs/name"
+        },
+        "kind": {
+          "const": "coloring"
+        },
+        "values": {
+          "additionalProperties": {
+            "type": "integer"
+          },
+          "type": "object"
+        }
+      },
+      "required": [
+        "id",
+        "kind",
+        "graph",
+        "values"
+      ],
+      "type": "object"
+    },
+    "graph": {
+      "additionalProperties": false,
+      "properties": {
+        "edges": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "$ref": "#/$defs/name"
+              },
+              "u": {
+                "$ref": "#/$defs/name"
+              },
+              "v": {
+                "$ref": "#/$defs/name"
+              }
+            },
+            "required": [
+              "id",
+              "u",
+              "v"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "id": {
+          "$ref": "#/$defs/name"
+        },
+        "kind": {
+          "const": "graph"
+        },
+        "vertices": {
+          "items": {
+            "$ref": "#/$defs/name"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "id",
+        "kind",
+        "vertices",
+        "edges"
+      ],
+      "type": "object"
+    },
+    "name": {
+      "pattern": "^[A-Za-z0-9_.:\\-]+$",
+      "type": "string"
+    },
+    "object": {
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "graph"
+              }
+            }
+          },
+          "then": {
+            "$ref": "#/$defs/graph"
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "coloring"
+              }
+            }
+          },
+          "then": {
+            "$ref": "#/$defs/coloring"
+          }
+        }
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/name"
+        },
+        "kind": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "kind"
+      ],
+      "type": "object"
+    }
+  },
+  "$id": "mathkit.ir/1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "evidence": {
+      "enum": [
+        "computation",
+        "paper",
+        "lean"
+      ]
+    },
+    "objects": {
+      "items": {
+        "$ref": "#/$defs/object"
+      },
+      "type": "array"
+    },
+    "provenance": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "type": "object"
+    },
+    "schema": {
+      "const": "mathkit.ir/1"
+    }
+  },
+  "required": [
+    "schema",
+    "evidence",
+    "objects"
+  ],
+  "title": "mathkit Math IR",
+  "type": "object"
+}

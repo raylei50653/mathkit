@@ -1,0 +1,108 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10510 10045" width="420" height="401" data-evidence="paper" role="img">
+<title>c5.ir</title>
+<metadata>{
+  "evidence": "paper",
+  "layout": {
+    "engine": "circular",
+    "exact": true,
+    "outer": [
+      "n0",
+      "n1",
+      "n2",
+      "n3",
+      "n4"
+    ],
+    "version": 1
+  },
+  "provenance": {
+    "source": "examples/c5.ir.json"
+  }
+}
+</metadata>
+<style>
+.mk-edge{stroke-width:40;stroke-linecap:round}
+.mk-edge.mk-outer,.mk-edge.mk-emphasis{stroke-width:70}
+.mk-edge.mk-dashed{stroke-dasharray:120 90}
+.mk-node circle{stroke-width:40}
+.mk-node.mk-outer circle,.mk-node.mk-emphasis circle{stroke-width:70}
+.mk-node.mk-dashed circle{stroke-dasharray:90 60}
+.mk-node text{font-family:serif;font-style:italic;text-anchor:middle;dominant-baseline:central}
+.mk-bg{fill:#ffffff}
+.mk-edge{stroke:#6e7781}
+.mk-edge.mk-outer{stroke:#0550ae}
+.mk-edge.mk-emphasis{stroke:#cf222e}
+.mk-edge.mk-muted{stroke:#afb8c1}
+.mk-node circle{fill:#ffffff;stroke:#1f2328}
+.mk-node.mk-outer circle{stroke:#0550ae}
+.mk-node.mk-emphasis circle{stroke:#cf222e}
+.mk-node.mk-muted circle{stroke:#afb8c1}
+.mk-node text{fill:#1f2328}
+.mk-node circle.mk-c0{fill:#ffd8a8}
+.mk-node circle.mk-c1{fill:#a5d8ff}
+.mk-node circle.mk-c2{fill:#b2f2bb}
+.mk-node circle.mk-c3{fill:#ffc9c9}
+.mk-node circle.mk-c4{fill:#d0bfff}
+.mk-node circle.mk-c5{fill:#ffec99}
+.mk-node circle.mk-c6{fill:#99e9f2}
+.mk-node circle.mk-c7{fill:#eebefa}
+@media (prefers-color-scheme:dark){
+.mk-bg{fill:#0d1117}
+.mk-edge{stroke:#8b949e}
+.mk-edge.mk-outer{stroke:#58a6ff}
+.mk-edge.mk-emphasis{stroke:#ff7b72}
+.mk-edge.mk-muted{stroke:#484f58}
+.mk-node circle{fill:#0d1117;stroke:#e6edf3}
+.mk-node.mk-outer circle{stroke:#58a6ff}
+.mk-node.mk-emphasis circle{stroke:#ff7b72}
+.mk-node.mk-muted circle{stroke:#484f58}
+.mk-node text{fill:#e6edf3}
+.mk-node circle.mk-c0{fill:#9a5b13}
+.mk-node circle.mk-c1{fill:#1f6feb}
+.mk-node circle.mk-c2{fill:#2b7a3d}
+.mk-node circle.mk-c3{fill:#a4363a}
+.mk-node circle.mk-c4{fill:#6e40c9}
+.mk-node circle.mk-c5{fill:#8a6d00}
+.mk-node circle.mk-c6{fill:#1b7c83}
+.mk-node circle.mk-c7{fill:#8e3a9e}
+}
+</style>
+<rect class="mk-bg" width="10510" height="10045"/>
+<g class="mk-edges">
+<line class="mk-edge mk-outer" data-id="s0" x1="5255" y1="500" x2="500" y2="3955"/>
+<line class="mk-edge mk-outer" data-id="s1" x1="500" y1="3955" x2="2316" y2="9545"/>
+<line class="mk-edge mk-outer" data-id="s2" x1="2316" y1="9545" x2="8194" y2="9545"/>
+<line class="mk-edge mk-outer" data-id="s3" x1="8194" y1="9545" x2="10010" y2="3955"/>
+<line class="mk-edge mk-outer" data-id="s4" x1="10010" y1="3955" x2="5255" y2="500"/>
+<line class="mk-edge mk-default" data-id="s5" x1="5255" y1="5500" x2="5255" y2="500"/>
+<line class="mk-edge mk-default" data-id="s6" x1="5255" y1="5500" x2="500" y2="3955"/>
+<line class="mk-edge mk-default" data-id="s7" x1="5255" y1="5500" x2="2316" y2="9545"/>
+<line class="mk-edge mk-default" data-id="s8" x1="5255" y1="5500" x2="8194" y2="9545"/>
+<line class="mk-edge mk-default" data-id="s9" x1="5255" y1="5500" x2="10010" y2="3955"/>
+</g>
+<g class="mk-nodes">
+<g class="mk-node mk-outer" data-id="n0">
+<circle class="mk-c1" cx="5255" cy="500" r="360"/>
+<text x="5255" y="500" font-size="320">b<tspan font-size="224" dy="80" font-style="normal">0</tspan></text>
+</g>
+<g class="mk-node mk-outer" data-id="n1">
+<circle class="mk-c2" cx="500" cy="3955" r="360"/>
+<text x="500" y="3955" font-size="320">b<tspan font-size="224" dy="80" font-style="normal">1</tspan></text>
+</g>
+<g class="mk-node mk-outer" data-id="n2">
+<circle class="mk-c1" cx="2316" cy="9545" r="360"/>
+<text x="2316" y="9545" font-size="320">b<tspan font-size="224" dy="80" font-style="normal">2</tspan></text>
+</g>
+<g class="mk-node mk-outer" data-id="n3">
+<circle class="mk-c2" cx="8194" cy="9545" r="360"/>
+<text x="8194" y="9545" font-size="320">b<tspan font-size="224" dy="80" font-style="normal">3</tspan></text>
+</g>
+<g class="mk-node mk-outer" data-id="n4">
+<circle class="mk-c3" cx="10010" cy="3955" r="360"/>
+<text x="10010" y="3955" font-size="320">b<tspan font-size="224" dy="80" font-style="normal">4</tspan></text>
+</g>
+<g class="mk-node mk-default" data-id="n5">
+<circle class="mk-c4" cx="5255" cy="5500" r="360"/>
+<text x="5255" y="5500" font-size="320">v</text>
+</g>
+</g>
+</svg>

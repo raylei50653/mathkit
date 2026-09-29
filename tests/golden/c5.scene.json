@@ -1,0 +1,213 @@
+{
+  "edges": [
+    {
+      "class": "outer",
+      "id": "s0",
+      "origin": [
+        "G/e0",
+        "B"
+      ],
+      "u": "n0",
+      "v": "n1"
+    },
+    {
+      "class": "outer",
+      "id": "s1",
+      "origin": [
+        "G/e1",
+        "B"
+      ],
+      "u": "n1",
+      "v": "n2"
+    },
+    {
+      "class": "outer",
+      "id": "s2",
+      "origin": [
+        "G/e2",
+        "B"
+      ],
+      "u": "n2",
+      "v": "n3"
+    },
+    {
+      "class": "outer",
+      "id": "s3",
+      "origin": [
+        "G/e3",
+        "B"
+      ],
+      "u": "n3",
+      "v": "n4"
+    },
+    {
+      "class": "outer",
+      "id": "s4",
+      "origin": [
+        "G/e4",
+        "B"
+      ],
+      "u": "n4",
+      "v": "n0"
+    },
+    {
+      "class": "default",
+      "id": "s5",
+      "origin": [
+        "G/s0"
+      ],
+      "u": "n5",
+      "v": "n0"
+    },
+    {
+      "class": "default",
+      "id": "s6",
+      "origin": [
+        "G/s1"
+      ],
+      "u": "n5",
+      "v": "n1"
+    },
+    {
+      "class": "default",
+      "id": "s7",
+      "origin": [
+        "G/s2"
+      ],
+      "u": "n5",
+      "v": "n2"
+    },
+    {
+      "class": "default",
+      "id": "s8",
+      "origin": [
+        "G/s3"
+      ],
+      "u": "n5",
+      "v": "n3"
+    },
+    {
+      "class": "default",
+      "id": "s9",
+      "origin": [
+        "G/s4"
+      ],
+      "u": "n5",
+      "v": "n4"
+    }
+  ],
+  "evidence": "paper",
+  "layers": [
+    {
+      "id": "l0",
+      "kind": "vertex-color",
+      "origin": [
+        "col"
+      ],
+      "values": {
+        "n0": 1,
+        "n1": 2,
+        "n2": 1,
+        "n3": 2,
+        "n4": 3,
+        "n5": 4
+      }
+    }
+  ],
+  "layout": {
+    "engine": "circular",
+    "exact": true,
+    "outer": [
+      "n0",
+      "n1",
+      "n2",
+      "n3",
+      "n4"
+    ],
+    "version": 1
+  },
+  "nodes": [
+    {
+      "class": "outer",
+      "id": "n0",
+      "label": "b_0",
+      "origin": [
+        "G/b_0",
+        "B"
+      ],
+      "pos": [
+        5000,
+        10000
+      ]
+    },
+    {
+      "class": "outer",
+      "id": "n1",
+      "label": "b_1",
+      "origin": [
+        "G/b_1",
+        "B"
+      ],
+      "pos": [
+        245,
+        6545
+      ]
+    },
+    {
+      "class": "outer",
+      "id": "n2",
+      "label": "b_2",
+      "origin": [
+        "G/b_2",
+        "B"
+      ],
+      "pos": [
+        2061,
+        955
+      ]
+    },
+    {
+      "class": "outer",
+      "id": "n3",
+      "label": "b_3",
+      "origin": [
+        "G/b_3",
+        "B"
+      ],
+      "pos": [
+        7939,
+        955
+      ]
+    },
+    {
+      "class": "outer",
+      "id": "n4",
+      "label": "b_4",
+      "origin": [
+        "G/b_4",
+        "B"
+      ],
+      "pos": [
+        9755,
+        6545
+      ]
+    },
+    {
+      "class": "default",
+      "id": "n5",
+      "label": "v",
+      "origin": [
+        "G/v"
+      ],
+      "pos": [
+        5000,
+        5000
+      ]
+    }
+  ],
+  "provenance": {
+    "source": "examples/c5.ir.json"
+  },
+  "schema": "mathkit.scene/1",
+  "title": "c5.ir"
+}

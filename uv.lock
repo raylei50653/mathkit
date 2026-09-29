@@ -327,6 +327,7 @@ validate = [
 dev = [
     { name = "hypothesis" },
     { name = "import-linter" },
+    { name = "jsonschema" },
     { name = "networkx" },
     { name = "pyright" },
     { name = "pytest" },
@@ -346,6 +347,7 @@ provides-extras = ["nx", "validate", "stream"]
 dev = [
     { name = "hypothesis", specifier = ">=6.100" },
     { name = "import-linter", specifier = ">=2.1" },
+    { name = "jsonschema", specifier = ">=4.23" },
     { name = "networkx", specifier = "==3.5" },
     { name = "pyright", specifier = ">=1.1.380" },
     { name = "pytest", specifier = ">=8" },

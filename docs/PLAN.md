@@ -49,11 +49,11 @@ U5 很重要：mathkit 的獨立實作可以當舊腳本的 second opinion，提
 
 每個里程碑都要可交付、可單獨使用。
 
-### M0 規劃與骨架（本次）
+### M0 規劃與骨架（完成）
 - 目錄、pyproject、文件、ADR。
 - 驗收：`uv run pytest` 通過 smoke test。
 
-### M1a 垂直切片：能真的畫出東西
+### M1a 垂直切片：能真的畫出東西（完成）
 - `core.graph`：不可變小圖（整數頂點、bitmask 鄰接），可與 networkx 雙向轉換。
 - `ir`：`MathDocument`＋ `graph`、`coloring` 兩個核心 kinds。
 - `domains.c5`：只加 `c5.boundary_cycle` kind 與其 compile rule（外圈、boundary 標籤）。

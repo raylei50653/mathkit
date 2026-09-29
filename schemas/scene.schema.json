@@ -1,0 +1,209 @@
+{
+  "$defs": {
+    "class": {
+      "enum": [
+        "default",
+        "outer",
+        "emphasis",
+        "muted",
+        "dashed",
+        "decoration"
+      ]
+    },
+    "edge": {
+      "additionalProperties": false,
+      "properties": {
+        "class": {
+          "$ref": "#/$defs/class"
+        },
+        "id": {
+          "type": "string"
+        },
+        "origin": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "u": {
+          "type": "string"
+        },
+        "v": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "u",
+        "v",
+        "class",
+        "origin"
+      ],
+      "type": "object"
+    },
+    "layer": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "vertex-color"
+          ]
+        },
+        "origin": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "values": {
+          "additionalProperties": {
+            "type": "integer"
+          },
+          "type": "object"
+        }
+      },
+      "required": [
+        "id",
+        "kind",
+        "values",
+        "origin"
+      ],
+      "type": "object"
+    },
+    "layout": {
+      "additionalProperties": false,
+      "properties": {
+        "engine": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "exact": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "outer": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "version": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "engine",
+        "outer",
+        "version",
+        "exact"
+      ],
+      "type": "object"
+    },
+    "node": {
+      "additionalProperties": false,
+      "properties": {
+        "class": {
+          "$ref": "#/$defs/class"
+        },
+        "id": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        },
+        "origin": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "pos": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "items": {
+                "type": "integer"
+              },
+              "maxItems": 2,
+              "minItems": 2,
+              "type": "array"
+            }
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "label",
+        "class",
+        "pos",
+        "origin"
+      ],
+      "type": "object"
+    }
+  },
+  "$id": "mathkit.scene/1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "edges": {
+      "items": {
+        "$ref": "#/$defs/edge"
+      },
+      "type": "array"
+    },
+    "evidence": {
+      "type": "string"
+    },
+    "layers": {
+      "items": {
+        "$ref": "#/$defs/layer"
+      },
+      "type": "array"
+    },
+    "layout": {
+      "$ref": "#/$defs/layout"
+    },
+    "nodes": {
+      "items": {
+        "$ref": "#/$defs/node"
+      },
+      "type": "array"
+    },
+    "provenance": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "type": "object"
+    },
+    "schema": {
+      "const": "mathkit.scene/1"
+    },
+    "title": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema",
+    "title",
+    "evidence",
+    "provenance",
+    "nodes",
+    "edges",
+    "layers",
+    "layout"
+  ],
+  "title": "mathkit Scene",
+  "type": "object"
+}
