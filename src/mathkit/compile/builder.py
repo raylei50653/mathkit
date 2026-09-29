@@ -33,6 +33,7 @@ class SceneBuilder:
     _layers: list[Layer] = field(default_factory=list[Layer])
     _outer: tuple[str, ...] | None = None
     _outer_origin: str = ""
+    _engine: str | None = None
 
     def add_node(
         self, key: str, label: str, origin: Iterable[str] = (), cls: str = "default"
@@ -81,11 +82,13 @@ class SceneBuilder:
         self._layers.append(Layer(layer_id, kind, translated, tuple(_dedupe(origin))))
         return layer_id
 
-    def set_outer(self, keys: Iterable[str], origin: str) -> None:
+    def set_outer(self, keys: Iterable[str], origin: str, engine: str | None = None) -> None:
+        """Pin the outer cycle, optionally hinting the layout engine that should honour it."""
         if self._outer is not None:
             raise CompileError(f"outer face claimed by both {self._outer_origin!r} and {origin!r}")
         self._outer = tuple(self.node(k) for k in keys)
         self._outer_origin = origin
+        self._engine = engine
 
     def build(self, title: str = "") -> Scene:
         nodes = tuple(
@@ -99,7 +102,7 @@ class SceneBuilder:
             nodes,
             edges,
             tuple(self._layers),
-            Layout(outer=self._outer or ()),
+            Layout(engine=self._engine, outer=self._outer or ()),
         )
 
 

@@ -26,7 +26,7 @@ def main(argv: list[str] | None = None) -> int:
         "-f", "--format", choices=("svg", "json"), help="default: from -o suffix, else svg"
     )
     render.add_argument("--view", default="default", help="compile view (Math IR input only)")
-    render.add_argument("--layout", help="override the layout engine (fixed, circular)")
+    render.add_argument("--layout", help="override the layout engine (fixed, circular, tutte)")
 
     schema = sub.add_parser("schema", help="print or write the JSON Schemas")
     schema.add_argument("which", nargs="?", choices=("ir", "scene"), default="scene")

@@ -1,4 +1,4 @@
-"""Deterministic layouts on the canonical integer grid (ADR-0006).
+"""Deterministic layouts on the canonical integer grid (ADR-0006): fixed, circular, tutte.
 
 Coordinates are integers in ``[0, GRID]``, y pointing up. ``LAYOUT_VERSION`` is written into
 every Scene; changing any engine's output bumps it.
@@ -9,14 +9,16 @@ from collections.abc import Callable, Mapping
 from mathkit.layout.circular import circular
 from mathkit.layout.fixed import LayoutError, fixed
 from mathkit.layout.grid import GRID
+from mathkit.layout.tutte import tutte
 from mathkit.scene import Layout as LayoutInfo
 from mathkit.scene import Pos, Scene
 
 LAYOUT_VERSION = 1
 
-#: engine -> (positions, exact). ``exact`` means byte-identical output on every platform.
-Engine = Callable[[Scene], tuple[Mapping[str, Pos], bool]]
-ENGINES: Mapping[str, Engine] = {"fixed": fixed, "circular": circular}
+#: engine -> (positions, exact, outer). ``exact`` means byte-identical output on every
+#: platform; ``outer`` is the outer cycle actually used (an engine may choose one).
+Engine = Callable[[Scene], tuple[Mapping[str, Pos], bool, tuple[str, ...]]]
+ENGINES: Mapping[str, Engine] = {"fixed": fixed, "circular": circular, "tutte": tutte}
 
 
 def apply_layout(scene: Scene, engine: str | None = None) -> Scene:
@@ -30,8 +32,8 @@ def apply_layout(scene: Scene, engine: str | None = None) -> Scene:
     run = ENGINES.get(name)
     if run is None:
         raise LayoutError(f"unknown layout engine {name!r}; available: {sorted(ENGINES)}")
-    pos, exact = run(scene)
-    info = LayoutInfo(name, scene.layout.outer, LAYOUT_VERSION, exact)
+    pos, exact, outer = run(scene)
+    info = LayoutInfo(name, outer, LAYOUT_VERSION, exact)
     return scene.with_positions(pos, info)
 
 

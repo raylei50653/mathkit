@@ -69,12 +69,13 @@ U5 很重要：mathkit 的獨立實作可以當舊腳本的 second opinion，提
   - 同一 `(kind, view)` 重複註冊會拋 `RuleConflictError`；
   - import-linter 分層與禁止依賴 contracts 全數通過。
 
-### M1b 平面引擎
+### M1b 平面引擎（完成）
 - `core.planar`：
   1. 由給定 rotation system 建嵌入、列舉面、以 Euler 公式驗證（`math` 的部分 artifacts 已記錄 planar rotation，可直接吃）；
   2. 平面性測試與嵌入搜尋：先以 networkx `check_planarity` 作為選用後端（extra `[nx]`），再以自有 LR 演算法取代；自有版與 networkx 交叉比對通過後才成為預設。
 - `layout.tutte`：外圈固定、小圖有理數精確解（ADR-0006）。
 - 驗收：5 種以上平面圖類的語意 golden 與位元組 golden；隨機平面圖 Tutte 無邊交叉。
+- 結果：自有 LR 為預設（hypothesis 與 networkx 交叉比對、所有嵌入經 Euler 驗證）；6 類 golden（wheel、cube、octahedron、prism、dodecahedron、icosahedron）；無交叉性質以隨機**三角剖分**（3-連通）驗證，因為 Tutte 定理只對 3-連通圖保證。
 
 ### M2 著色引擎
 - `core.coloring`：proper coloring、list coloring、所有擴張列舉（bitmask 回溯）。

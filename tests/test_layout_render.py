@@ -17,7 +17,7 @@ def _bare(n: int) -> Scene:
 
 
 def test_circular_square_is_exact_grid() -> None:
-    pos, exact = circular(_bare(4))
+    pos, exact, _ = circular(_bare(4))
     assert exact
     half = GRID // 2
     assert dict(pos) == {"n0": (half, GRID), "n1": (0, half), "n2": (half, 0), "n3": (GRID, half)}
@@ -25,7 +25,7 @@ def test_circular_square_is_exact_grid() -> None:
 
 def test_c5_layout(c5_doc: MathDocument, domains: Domains) -> None:
     scene = apply_layout(compile_visual(c5_doc, domains.registry))
-    assert scene.layout.engine == "circular" and scene.layout.exact
+    assert scene.layout.engine == "tutte" and scene.layout.exact
     assert scene.layout.version == LAYOUT_VERSION
     pos = {n.label: n.pos for n in scene.nodes}
     assert pos["v"] == (GRID // 2, GRID // 2)
@@ -53,7 +53,7 @@ def test_fixed_layout() -> None:
     out = apply_layout(placed)
     assert out.layout.engine == "fixed" and out.nodes[1].pos == (1, -1)
     with pytest.raises(LayoutError, match="unknown layout engine"):
-        apply_layout(placed, "tutte")
+        apply_layout(placed, "spring")
 
 
 def test_svg_needs_positions() -> None:

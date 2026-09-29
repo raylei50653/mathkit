@@ -3,7 +3,7 @@
 <metadata>{
   "evidence": "paper",
   "layout": {
-    "engine": "circular",
+    "engine": "tutte",
     "exact": true,
     "outer": [
       "n0",

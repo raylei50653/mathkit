@@ -11,7 +11,7 @@
 adapter → Math IR（數學意義）→ Visual Compiler → Scene（純視覺）→ layout → SVG／TikZ／Viewer
 ```
 
-> 狀態：**M1a 完成**。`mathkit render` 可把 Math IR／Scene 轉成決定性 SVG 或 Scene JSON；下一步 M1b 平面引擎。
+> 狀態：**M1b 完成**。`mathkit render` 可把 Math IR／Scene 轉成決定性 SVG 或 Scene JSON；`core.planar` 提供嵌入與 LR 平面性測試，C5 圖以 Tutte 精確排版。下一步 M2 著色引擎。
 
 ## 文件
 

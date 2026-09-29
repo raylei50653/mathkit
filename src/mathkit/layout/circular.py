@@ -15,21 +15,21 @@ _PI = Decimal("3.14159265358979323846264338327950288419716939937510")
 _HALF = Decimal(GRID) / 2
 
 
-def circular(scene: Scene) -> tuple[Mapping[str, Pos], bool]:
+def circular(scene: Scene) -> tuple[Mapping[str, Pos], bool, tuple[str, ...]]:
     outer = list(scene.layout.outer) or [n.id for n in scene.nodes]
     on_outer = set(outer)
     inner = [n.id for n in scene.nodes if n.id not in on_outer]
-    pos = dict(_ring(outer, _HALF))
+    pos = dict(ring(outer, _HALF))
     if len(inner) == 1:
         pos[inner[0]] = (GRID // 2, GRID // 2)
     else:
-        pos.update(_ring(inner, _HALF / 2))
-    return pos, True
+        pos.update(ring(inner, _HALF / 2))
+    return pos, True, scene.layout.outer
 
 
-def _ring(ids: Sequence[str], radius: Decimal) -> list[tuple[str, Pos]]:
-    """First id at the top, then counter-clockwise."""
-    out: list[tuple[str, Pos]] = []
+def ring[K](ids: Sequence[K], radius: Decimal) -> list[tuple[K, Pos]]:
+    """Regular polygon centred in the grid box: first id at the top, then counter-clockwise."""
+    out: list[tuple[K, Pos]] = []
     with localcontext() as ctx:
         ctx.prec = _PREC
         for k, node in enumerate(ids):

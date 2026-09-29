@@ -9,10 +9,10 @@ class LayoutError(ValueError):
     """The requested layout cannot be applied to this Scene."""
 
 
-def fixed(scene: Scene) -> tuple[Mapping[str, Pos], bool]:
+def fixed(scene: Scene) -> tuple[Mapping[str, Pos], bool, tuple[str, ...]]:
     pos: dict[str, Pos] = {}
     for n in scene.nodes:
         if n.pos is None:
             raise LayoutError(f"fixed layout: node {n.id!r} has no pos")
         pos[n.id] = n.pos
-    return pos, True
+    return pos, True, scene.layout.outer

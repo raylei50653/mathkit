@@ -63,7 +63,7 @@ core                        ← 計算原語
 | 模組 | 職責 | 關鍵介面（草案） |
 | --- | --- | --- |
 | `graph` | 不可變小圖；頂點 `0..n-1`，鄰接為 int bitmask | `Graph.from_edges`, `.to_networkx()`, `.induced(mask)` |
-| `planar` | rotation system、面列舉、平面性、外圈 | `Embedding.from_rotation(...)`, `embed(g)` |
+| `planar` | rotation system（逆時針）、面列舉（面在左）、Euler 驗證、LR 平面性測試 | `Embedding.from_rotation(g, rot)`, `embed(g, backend="lr"\|"networkx")`, `.faces()` |
 | `coloring` | proper／list coloring、擴張列舉、色置換正規化 | `extensions(g, lists, fixed)` |
 | `kempe` | 兩色子圖分量、swap、Kempe 等價類 | `chains(g, col, a, b)`, `swap(col, chain)` |
 | `minor` | K5／K3,3 minor 分支集**驗證**；搜尋為輔 | `check_minor(g, branch_sets, H)` |
@@ -104,6 +104,7 @@ core                        ← 計算原語
 - **決定性的 plugin discovery**：entry points 依名稱排序後依序載入；同名 domain 重複出現也是錯誤。註冊表建完後凍結，編譯期間不可變動。
 - 規則來源：通用規則（`graph`、`coloring`、`witness` 的 `branch_sets`）＋ domain pack 註冊的規則。
 - 查找順序：`(kind, view)` → `(kind, "default")`；因此非預設 view 只需註冊與預設不同的規則。
+- 規則可在 `set_outer(..., engine=...)` 提示 layout 引擎；`c5.boundary_cycle` 提示 `tutte`。CLI `--layout` 可覆寫。
 - 沒有規則的 kind：產生警告（`CompileWarning`）並略過，不失敗；`graph` 類物件至少以通用規則畫出。
 - 規則寫入 `SceneBuilder`：Scene 元素以其所畫的 IR 元素 id 為鍵，後續規則（如 `c5.boundary_cycle`）可找到並改 `class`、追加 `origin`。IR 物件依引用關係排序後編譯（被引用者先）。
 - 同一份 IR 可有多個 view（例如 `default`、`kempe:1-3`、`minor`），由 CLI／檢視器選擇。
@@ -152,7 +153,7 @@ core                        ← 計算原語
 | --- | --- | --- |
 | `fixed` | 使用 Scene 自帶座標 | M1a |
 | `circular` | 小圖：外圈正多邊形；內點 1 個置中，多個排內圈。三角函數以 `decimal` 固定精度計算，不經 libm，故 `exact: true` | M1a |
-| `tutte` | 平面圖、外圈固定，內點解線性系統；可行時用有理數精確解（§6） | M1b |
+| `tutte` | 平面圖、外圈固定為正多邊形，內點解重心線性系統；內點 ≤ 64 用 `Fraction` 精確解（§6）。未給 `layout.outer` 時取嵌入中「最大的簡單環面，同長取排序後頂點集最小者」，並寫回 Scene；3-連通圖（Whitney：嵌入唯一至鏡像）的選擇與平面性後端無關。只有 3-連通且外圈為面時保證無交叉 | M1b |
 | `layered` | DAG（relation 蘊含、transformation 鏈、自動機） | M3 後 |
 
 ### render
