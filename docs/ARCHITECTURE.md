@@ -64,11 +64,11 @@ core                        ← 計算原語
 | --- | --- | --- |
 | `graph` | 不可變小圖；頂點 `0..n-1`，鄰接為 int bitmask | `Graph.from_edges`, `.to_networkx()`, `.induced(mask)` |
 | `planar` | rotation system（逆時針）、面列舉（面在左）、Euler 驗證、LR 平面性測試 | `Embedding.from_rotation(g, rot)`, `embed(g, backend="lr"\|"networkx")`, `.faces()` |
-| `coloring` | proper／list coloring、擴張列舉、色置換正規化 | `extensions(g, lists, fixed)` |
-| `kempe` | 兩色子圖分量、swap、Kempe 等價類 | `chains(g, col, a, b)`, `swap(col, chain)` |
-| `minor` | K5／K3,3 minor 分支集**驗證**；搜尋為輔 | `check_minor(g, branch_sets, H)` |
+| `coloring` | proper／list coloring、擴張列舉、色置換正規化；著色為 int tuple（`UNCOLORED = -1`），色表為 bitmask | `extensions(g, lists, fixed)`, `chromatic_number(g)`, `normalize_colors(col)` |
+| `kempe` | 兩色子圖分量（bitmask）、swap、Kempe 等價類（可選「色置換下」） | `chains(g, col, a, b)`, `swap(col, chain, a, b)`, `kempe_class(g, col)` |
+| `minor` | K5／K3,3 minor 分支集**驗證**（失敗附理由）；搜尋為輔：`kuratowski` 由非平面圖抽出 K5／K3,3 模型，作為非平面性的可驗證證書 | `check_minor(g, branch_sets, H)`, `kuratowski(g)` |
 | `relation` | 有限 port 上的 pattern relation：交、投影、條件化 | `Relation.condition(literals)` |
-| `certificate` | 輸入 sha256、決定性 JSON、replay 描述 | `fingerprint(paths)`, `dump(obj, path)` |
+| `certificate` | 輸入 sha256、決定性 JSON、replay 描述（含 `evidence: "computation"`） | `fingerprint(paths)`, `dump(obj, path)`, `replay(cmd, inputs)` |
 
 純函式或只回傳新物件；不讀寫檔案（`certificate.dump` 除外）。
 

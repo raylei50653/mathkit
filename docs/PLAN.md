@@ -77,12 +77,13 @@ U5 很重要：mathkit 的獨立實作可以當舊腳本的 second opinion，提
 - 驗收：5 種以上平面圖類的語意 golden 與位元組 golden；隨機平面圖 Tutte 無邊交叉。
 - 結果：自有 LR 為預設（hypothesis 與 networkx 交叉比對、所有嵌入經 Euler 驗證）；6 類 golden（wheel、cube、octahedron、prism、dodecahedron、icosahedron）；無交叉性質以隨機**三角剖分**（3-連通）驗證，因為 Tutte 定理只對 3-連通圖保證。
 
-### M2 著色引擎
+### M2 著色引擎（完成）
 - `core.coloring`：proper coloring、list coloring、所有擴張列舉（bitmask 回溯）。
 - `core.kempe`：Kempe chain 分量、swap、可達等價類。
 - `core.minor`：K5／K3,3 minor 證書的**檢查器**（給分支集 → 驗證），搜尋器為次要。
 - `core.certificate`：輸入指紋、決定性 JSON dump、replay 描述。
 - 驗收：hypothesis 性質測試；與 networkx 在隨機小圖上交叉比對。
+- 結果：擴張列舉對照測試內獨立的暴力枚舉（list＋precoloring）；色數對照 networkx `greedy_color` 上界；Kempe 鏈對照 networkx 連通分量；`check_minor` 對照 networkx `quotient_graph`；`kuratowski` 的輸出一律經 `check_minor` 驗證，補上 M1b「非平面」回答的證書。
 
 ### M3 C5 domain pack + math artifacts 轉接
 - `domains.c5`：boundary pattern、Σ 十位元識別、relation 正規化、染色色盤。

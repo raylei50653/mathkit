@@ -1,4 +1,4 @@
-"""Domain-free combinatorial engine. Implemented: graph, planar, certificate (partial).
+"""Domain-free combinatorial engine. Relation arrives with M3.
 
 Modules: graph, planar, coloring, kempe, minor, relation, certificate.
 """
